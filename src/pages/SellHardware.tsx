@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Camera, Upload, X, DollarSign, Cpu, Plus } from "lucide-react";
+import { Camera, Upload, X, DollarSign, Cpu, Plus, PenLine } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +22,8 @@ const SellHardware = () => {
   const [aiResult, setAiResult] = useState<string | null>(null);
   const [showEstimate, setShowEstimate] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [mode, setMode] = useState<"photo" | "manual" | null>(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -108,9 +110,130 @@ const SellHardware = () => {
           </p>
         </div>
 
+        {/* Mode Selector */}
+        {!mode && (
+          <div className="grid gap-4 sm:grid-cols-2 max-w-2xl">
+            <button
+              onClick={() => setMode("photo")}
+              className="group flex flex-col items-center gap-4 rounded-xl border-2 border-dashed border-border p-10 transition-all hover:border-primary hover:bg-primary/5"
+            >
+              <Camera className="h-10 w-10 text-muted-foreground group-hover:text-primary transition-colors" />
+              <div className="text-center">
+                <p className="font-display text-lg font-semibold text-foreground">Take Photo</p>
+                <p className="text-sm text-muted-foreground">Upload photos and let AI identify your hardware</p>
+              </div>
+            </button>
+            <button
+              onClick={() => setMode("manual")}
+              className="group flex flex-col items-center gap-4 rounded-xl border-2 border-dashed border-border p-10 transition-all hover:border-primary hover:bg-primary/5"
+            >
+              <PenLine className="h-10 w-10 text-muted-foreground group-hover:text-primary transition-colors" />
+              <div className="text-center">
+                <p className="font-display text-lg font-semibold text-foreground">Add Manually</p>
+                <p className="text-sm text-muted-foreground">Enter hardware details and specs yourself</p>
+              </div>
+            </button>
+          </div>
+        )}
+
+        {mode && (
+          <div className="mb-6">
+            <Button variant="ghost" onClick={() => setMode(null)} className="gap-2 text-muted-foreground">
+              ← Back to options
+            </Button>
+          </div>
+        )}
+
+        {mode && (
         <div className="grid gap-8 lg:grid-cols-5">
           {/* Form — left column */}
           <div className="lg:col-span-3 space-y-6">
+            {/* Photo Upload Card — show first for photo mode */}
+            {mode === "photo" && (
+            <Card className="border-border card-gradient">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg font-display">
+                  <Camera className="h-5 w-5 text-primary" />
+                  Photos &amp; AI Analysis
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Upload up to 5 photos. Our AI will analyze them to verify
+                  hardware condition and identify the model.
+                </p>
+
+                {/* Photo grid */}
+                <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+                  {photos.map((photo, i) => (
+                    <div
+                      key={i}
+                      className="group relative aspect-square overflow-hidden rounded-lg border border-border"
+                    >
+                      <img
+                        src={photo.url}
+                        alt={`Upload ${i + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                      <button
+                        onClick={() => removePhoto(i)}
+                        className="absolute right-1 top-1 rounded-full bg-background/80 p-1 opacity-0 transition-opacity group-hover:opacity-100"
+                      >
+                        <X className="h-3 w-3 text-foreground" />
+                      </button>
+                    </div>
+                  ))}
+                  {photos.length < 5 && (
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                    >
+                      <Plus className="h-6 w-6" />
+                    </button>
+                  )}
+                </div>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={handlePhotoUpload}
+                />
+
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="gap-2"
+                  >
+                    <Upload className="h-4 w-4" />
+                    Upload Photos
+                  </Button>
+                  <Button
+                    onClick={analyzePhotos}
+                    disabled={photos.length === 0 || analyzing}
+                    className="gap-2"
+                  >
+                    <Camera className="h-4 w-4" />
+                    {analyzing ? "Analyzing…" : "Analyze with AI"}
+                  </Button>
+                </div>
+
+                {/* AI result */}
+                {aiResult && (
+                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                    <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-primary">
+                      AI Analysis
+                    </p>
+                    <p className="text-sm text-foreground">{aiResult}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+            )}
+
             {/* Machine Details Card */}
             <Card className="border-border card-gradient">
               <CardHeader className="pb-4">
@@ -231,90 +354,6 @@ const SellHardware = () => {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Photo Upload Card */}
-            <Card className="border-border card-gradient">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg font-display">
-                  <Camera className="h-5 w-5 text-primary" />
-                  Photos &amp; AI Analysis
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  Upload up to 5 photos. Our AI will analyze them to verify
-                  hardware condition and identify the model.
-                </p>
-
-                {/* Photo grid */}
-                <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
-                  {photos.map((photo, i) => (
-                    <div
-                      key={i}
-                      className="group relative aspect-square overflow-hidden rounded-lg border border-border"
-                    >
-                      <img
-                        src={photo.url}
-                        alt={`Upload ${i + 1}`}
-                        className="h-full w-full object-cover"
-                      />
-                      <button
-                        onClick={() => removePhoto(i)}
-                        className="absolute right-1 top-1 rounded-full bg-background/80 p-1 opacity-0 transition-opacity group-hover:opacity-100"
-                      >
-                        <X className="h-3 w-3 text-foreground" />
-                      </button>
-                    </div>
-                  ))}
-                  {photos.length < 5 && (
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-                    >
-                      <Plus className="h-6 w-6" />
-                    </button>
-                  )}
-                </div>
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="hidden"
-                  onChange={handlePhotoUpload}
-                />
-
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="gap-2"
-                  >
-                    <Upload className="h-4 w-4" />
-                    Upload Photos
-                  </Button>
-                  <Button
-                    onClick={analyzePhotos}
-                    disabled={photos.length === 0 || analyzing}
-                    className="gap-2"
-                  >
-                    <Camera className="h-4 w-4" />
-                    {analyzing ? "Analyzing…" : "Analyze with AI"}
-                  </Button>
-                </div>
-
-                {/* AI result */}
-                {aiResult && (
-                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
-                    <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-primary">
-                      AI Analysis
-                    </p>
-                    <p className="text-sm text-foreground">{aiResult}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
           </div>
 
           {/* Estimate — right column */}
@@ -405,6 +444,7 @@ const SellHardware = () => {
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
