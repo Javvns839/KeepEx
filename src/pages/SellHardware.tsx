@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Camera, Upload, X, DollarSign, Cpu, Plus, PenLine } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/sonner";
 
 const SellHardware = () => {
+  const navigate = useNavigate();
   const [photos, setPhotos] = useState<{ url: string; file: File }[]>([]);
   const [analyzing, setAnalyzing] = useState(false);
   const [aiResult, setAiResult] = useState<string | null>(null);
@@ -447,7 +449,7 @@ const SellHardware = () => {
         )}
 
         <div className="mt-12 text-center">
-          <Button variant="outline" size="lg" className="gap-2">
+          <Button variant="outline" size="lg" className="gap-2" onClick={() => navigate("/contact")}>
             Contact Sales
           </Button>
         </div>

@@ -1,4 +1,4 @@
-import { ShieldCheck, DollarSign, Landmark, Info, Briefcase } from "lucide-react";
+import { ShieldCheck, DollarSign, Landmark, Info, Briefcase, Mail } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -18,6 +18,7 @@ const menuItems = [
   { title: "Financing", url: "/financing", icon: Landmark },
   { title: "About", url: "/about", icon: Info },
   { title: "Careers", url: "/careers", icon: Briefcase },
+  { title: "Contact", url: "/contact", icon: Mail },
 ];
 
 export function AppSidebar() {
