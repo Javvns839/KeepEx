@@ -445,6 +445,12 @@ const SellHardware = () => {
           </div>
         </div>
         )}
+
+        <div className="mt-12 text-center">
+          <Button variant="outline" size="lg" className="gap-2">
+            Contact Sales
+          </Button>
+        </div>
       </div>
     </div>
   );
