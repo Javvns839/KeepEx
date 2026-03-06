@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
+  { title: "About", url: "/about", icon: Info },
   { title: "Verification", url: "/verification", icon: ShieldCheck },
   { title: "Pricing Guide", url: "/pricing-guide", icon: DollarSign },
   { title: "Financing", url: "/financing", icon: Landmark },
-  { title: "About", url: "/about", icon: Info },
   { title: "Careers", url: "/careers", icon: Briefcase },
   { title: "Contact", url: "/contact", icon: Mail },
 ];
