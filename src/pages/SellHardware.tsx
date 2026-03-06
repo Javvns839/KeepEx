@@ -444,6 +444,7 @@ const SellHardware = () => {
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
