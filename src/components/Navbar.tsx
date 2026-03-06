@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           <Cpu className="h-6 w-6 text-primary" />
           <span className="font-display text-xl font-bold text-foreground">
-            Dep<span className="text-primary">GPU</span>
+            Keep<span className="text-primary">Ex</span>
           </span>
         </div>
 
