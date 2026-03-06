@@ -7,6 +7,11 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import Navbar from "@/components/Navbar";
 import Index from "./pages/Index";
+import Verification from "./pages/Verification";
+import PricingGuide from "./pages/PricingGuide";
+import Financing from "./pages/Financing";
+import About from "./pages/About";
+import Careers from "./pages/Careers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +30,11 @@ const App = () => (
               <main className="flex-1">
                 <Routes>
                   <Route path="/" element={<Index />} />
+                  <Route path="/verification" element={<Verification />} />
+                  <Route path="/pricing-guide" element={<PricingGuide />} />
+                  <Route path="/financing" element={<Financing />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/careers" element={<Careers />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
