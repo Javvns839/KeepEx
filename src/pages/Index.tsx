@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import Navbar from "@/components/Navbar";
 import MarketplaceHero from "@/components/MarketplaceHero";
 import SegmentSwitcher from "@/components/SegmentSwitcher";
 import FilterBar from "@/components/FilterBar";
@@ -57,7 +56,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <MarketplaceHero />
 
       <main className="container mx-auto max-w-6xl px-6 py-10">
