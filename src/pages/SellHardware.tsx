@@ -23,6 +23,8 @@ const SellHardware = () => {
   const [showEstimate, setShowEstimate] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [mode, setMode] = useState<"photo" | "manual" | null>(null);
+
   const [form, setForm] = useState({
     name: "",
     brand: "",
