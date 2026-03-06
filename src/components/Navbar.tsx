@@ -27,7 +27,7 @@ const Navbar = () => {
             Buy Hardware
           </button>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/sell")}
             className="flex items-center gap-2 rounded-md border border-primary bg-primary/10 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
           >
             <Tag className="h-4 w-4" />
